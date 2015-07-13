@@ -46,6 +46,7 @@ function precmd () {
 # =======
 # Vi Mode
 # =======
+console_vim="%(!.#.❯)"
 function zle-line-init zle-keymap-select {
     console_vim="${${KEYMAP/vicmd/%(!.#.❮)}/(main|viins)/%(!.#.❯)}"
     zle reset-prompt
