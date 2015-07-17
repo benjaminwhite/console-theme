@@ -58,7 +58,7 @@ function precmd () {
 # ============
 function ssh-hostname () {
     if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
-        echo " ${console_green}[${console_lime}♘ ${console_green}:${console_lime}%m${console_green}]${console_reset}"
+        echo "${console_green}[${console_lime}♘ ${console_green}:${console_lime}%m${console_green}]${console_reset}"
     else
         echo ''
     fi
@@ -77,10 +77,10 @@ function zle-line-init zle-keymap-select {
 zle -N zle-line-init
 zle -N zle-keymap-select
 
-console_time='${console_grey}[${console_silver}%*${console_grey}]${console_reset}'
+console_time='${console_grey}[${console_silver}%*${console_grey}]${console_reset} '
 
 # ======
 # Prompt
 # ======
 PROMPT='${console_blue}[${console_cyan}%~${console_blue}]$(console_git_info)${console_exit} ${console_vim} ${console_reset}'
-RPROMPT="$(ssh-hostname)${console_time}"
+RPROMPT="${console_time}$(ssh-hostname)"
