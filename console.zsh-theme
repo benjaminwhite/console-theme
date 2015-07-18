@@ -46,10 +46,11 @@ ZSH_THEME_GIT_PROMPT_DIRTY="*"
 # Error Code
 # ==========
 function precmd () {
-  if [ $? -eq 0 ]; then
+  console_code="$?"
+  if [ $console_code -eq 0 ]; then
       console_exit=""
   else
-      console_exit=" ${console_rouge}[${console_red}$?${console_rouge}]"
+      console_exit=" ${console_rouge}[${console_red}${console_code}${console_rouge}]"
   fi
 }
 
