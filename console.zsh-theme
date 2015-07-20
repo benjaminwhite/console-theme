@@ -83,8 +83,5 @@ console_time='${console_grey}[${console_silver}%*${console_grey}]${console_reset
 # Prompt
 # ======
 
-# Removes space automatically placed on the far right
-ZLE_RPROMPT_INDENT=0
-
-PROMPT='${console_blue}[${console_cyan}%~${console_blue}]$(console_git_info)${console_exit} ${console_vim}  ${console_reset}'
+PROMPT='${console_blue}[${console_cyan}%~${console_blue}]$(console_git_info)${console_exit} ${console_vim} ${console_reset}'
 RPROMPT="${console_time}$(ssh-hostname)"
