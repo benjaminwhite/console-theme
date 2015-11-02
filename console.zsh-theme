@@ -73,6 +73,7 @@ function precmd {
 # ======= #
 # Vi Mode #
 # ======= #
+console_char=" %(!.#.❯) ${console_reset}"
 function zle-line-init zle-keymap-select {
   console_char=" ${${KEYMAP/vicmd/%(!.#.❮)}/(main|viins)/%(!.#.❯)} ${console_reset}"
   zle reset-prompt
