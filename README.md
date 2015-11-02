@@ -1,13 +1,11 @@
 # Console Zsh Theme
 
-![console demo](https://raw.githubusercontent.com/benjaminwhite/console-theme/master/consoledemo.gif)
-
 ## Features
 
-- By default, only the current working directory and time are shown.
-- Hostname shown when sshing to a remote host.
-- Branch name shown when in a git repo.
-- Previous exit code shown when non-zero.
+- By default, only the current working directory is shown.
+- Host name, or `$HOST_SYMBOL` if set, is shown **when sshing to a host**.
+- Branch name is shown when in a git repo.
+- Previous exit code is shown **when non-zero**.
 - vi-mode indicator:
     - Insert Mode: `❯`
     - Command Mode: `❮`

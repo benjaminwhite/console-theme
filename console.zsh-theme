@@ -2,11 +2,12 @@
 #
 # Author: Ben White
 # URL: benwhite.io
-#
 
-# ======
-# Colors
-# ======
+console_sep="○"
+
+# ====== #
+# Colors #
+# ====== #
 console_grey="%{$FG[239]%}"
 console_silver="%{$FG[244]%}"
 console_cyan="%{$FG[045]%}"
@@ -21,67 +22,66 @@ console_green="%{$FG[028]%}"
 console_lime="%{$FG[049]%}"
 console_reset="%{$reset_color%}"
 
-# ===
-# Git
-# ===
-console_git_info () {
-    if [[ "$(command git config --get oh-my-zsh.hide-status 2>/dev/null)" != "1" ]]; then
-        ref=$(command git symbolic-ref HEAD 2> /dev/null) || \
-        ref=$(command git rev-parse --short HEAD 2> /dev/null) || return 0
-        echo "$ZSH_THEME_GIT_PROMPT_PREFIX${ref#refs/heads/}$ZSH_THEME_GIT_PROMPT_SUFFIX"
+# ============ #
+# SSH hostname #
+# ============ #
+function ssh_host {
+  if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
+    if [ -n "$HOST_SYMBOL" ]; then
+      echo " ${console_green}${HOST_SYMBOL}${console_reset}"
+    else
+      echo " ${console_lime}%m ${console_green}${console_sep}${console_reset}"
     fi
-}
-
-if [[ $CONSOLE_POWERLINE == 'true' ]]; then
-    console_git_symbol='\ue0a0'
-else
-    console_git_symbol='±'
-fi
-
-ZSH_THEME_GIT_PROMPT_PREFIX=" ${console_tan}[${console_yellow}${console_git_symbol}${console_tan}:${console_yellow}"
-ZSH_THEME_GIT_PROMPT_SUFFIX="${console_tan}]"
-ZSH_THEME_GIT_PROMPT_DIRTY="*"
-
-# ==========
-# Error Code
-# ==========
-function precmd () {
-  console_code="$?"
-  if [ $console_code -eq 0 ]; then
-      console_exit=""
   else
-      console_exit=" ${console_rouge}[${console_red}${console_code}${console_rouge}]"
+    echo "${console_reset}"
   fi
 }
 
-# ============
-# SSH hostname
-# ============
-function ssh-hostname () {
-    if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
-        echo " ${console_green}[${console_lime}♘ ${console_green}:${console_lime}%m${console_green}]${console_reset}"
-    else
-        echo ''
-    fi
+# ========= #
+# Directory #
+# ========= #
+function console_dir {
+  echo " ${console_cyan}%~${console_blue}"
 }
 
-# =======
-# Vi Mode
-# =======
-console_vim="%(!.#.❯)"
+# === #
+# Git #
+# === #
+ZSH_THEME_GIT_PROMPT_PREFIX=" ${console_sep} ${console_yellow}"
+ZSH_THEME_GIT_PROMPT_SUFFIX="${console_tan}"
+
+function console_git_info {
+  if [[ "$(command git config --get oh-my-zsh.hide-status 2>/dev/null)" != "1" ]]; then
+    ref=$(command git symbolic-ref HEAD 2> /dev/null) || \
+    ref=$(command git rev-parse --short HEAD 2> /dev/null) || return 0
+    echo "$ZSH_THEME_GIT_PROMPT_PREFIX${ref#refs/heads/}$ZSH_THEME_GIT_PROMPT_SUFFIX"
+  fi
+}
+
+# ========== #
+# Error Code #
+# ========== #
+function precmd {
+  console_code="$?"
+  if [ $console_code -eq 0 ]; then
+    console_exit=""
+  else
+    console_exit=" ${console_sep} ${console_red}${console_code}${console_rouge}"
+  fi
+}
+
+# ======= #
+# Vi Mode #
+# ======= #
 function zle-line-init zle-keymap-select {
-    console_vim="${${KEYMAP/vicmd/%(!.#.❮)}/(main|viins)/%(!.#.❯)}"
-    zle reset-prompt
+  console_char=" ${${KEYMAP/vicmd/%(!.#.❮)}/(main|viins)/%(!.#.❯)} ${console_reset}"
+  zle reset-prompt
 }
 
 zle -N zle-line-init
 zle -N zle-keymap-select
 
-console_time='${console_grey}[${console_silver}%*${console_grey}]${console_reset}'
-
 # ======
 # Prompt
 # ======
-
-PROMPT='${console_blue}[${console_cyan}%~${console_blue}]$(console_git_info)${console_exit} ${console_vim} ${console_reset}'
-RPROMPT="${console_time}$(ssh-hostname)"
+PROMPT='$(ssh_host)$(console_dir)$(console_git_info)${console_exit}${console_char}'
